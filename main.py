@@ -1,11 +1,13 @@
 import turtle
 import random
+import time
 
 # Screen setup
 screen = turtle.Screen()
 screen.bgcolor("light blue")
 screen.title("Catch The Turtle")
 score=0
+start_time=time.time()# start timer
 
 # Main turtle setup
 main_turtle = turtle.Turtle()
@@ -14,6 +16,7 @@ main_turtle.shapesize(2, 2, 2)
 main_turtle.fillcolor("black")
 main_turtle.color("red")
 main_turtle.hideturtle()  # Hide the main turtle
+
 
 #turtle list
 turtle_list=[]
@@ -64,9 +67,16 @@ def hide_turtles():
     for t in turtle_list:
         t.hideturtle()
 
+#recursive function
 def show_turtles_rondomly():
+    hide_turtles()    #We have a lot of turtles right now ,but I need only one that's why we can use hide_turtles function.
     random.choice(turtle_list).showturtle()
+    elapsed_time=time.time()-start_time
+    if score==10 or elapsed_time>=30:
+        print("level up")
+        return
 
+    screen.ontimer(show_turtles_rondomly, 1000)
 
 turtle.tracer(0)
 setup_score_turtle()
