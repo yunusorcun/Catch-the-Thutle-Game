@@ -5,6 +5,7 @@ import random
 screen = turtle.Screen()
 screen.bgcolor("light blue")
 screen.title("Catch The Turtle")
+score=0
 
 # Main turtle setup
 main_turtle = turtle.Turtle()
@@ -35,6 +36,15 @@ grid_size=11
 def make_turtle(x,y):
     t=turtle.Turtle()
 
+    def handle_click(x, y): #I used this fonction for detect on turtle
+        #print(x, y)
+        global score
+        score+=1
+        score_turtle.clear()
+        score_turtle.write(arg=f"Score:{score}", move=False, align="center", font=FONT) # I used 'f' to enter data.
+
+
+    t.onclick(handle_click)
     t.penup()
     t.shape("turtle")
     t.shapesize(2, 2, 2)
