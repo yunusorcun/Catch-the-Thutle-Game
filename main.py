@@ -1,13 +1,13 @@
 import turtle
 import random
-import time
+
 
 # Screen setup
 screen = turtle.Screen()
 screen.bgcolor("light blue")
 screen.title("Catch The Turtle")
 score=0
-start_time=time.time()# start timer
+game_over=False #This code was written about the end of the  game.
 
 # Main turtle setup
 main_turtle = turtle.Turtle()
@@ -24,6 +24,10 @@ turtle_list=[]
 # Score turtle setup
 score_turtle = turtle.Turtle()
 FONT = ('Cebri', 15, 'normal')
+
+# Countdown turtle
+countdown_turtle=turtle.Turtle()
+
 
 def setup_score_turtle():
     score_turtle.hideturtle()
@@ -71,17 +75,37 @@ def hide_turtles():
 def show_turtles_rondomly():
     hide_turtles()    #We have a lot of turtles right now ,but I need only one that's why we can use hide_turtles function.
     random.choice(turtle_list).showturtle()
-    elapsed_time=time.time()-start_time
-    if score==10 or elapsed_time>=30:
-        print("level up")
-        return
+    screen.ontimer(show_turtles_rondomly,500)
 
-    screen.ontimer(show_turtles_rondomly, 1000)
+def countdown(time):
+    global game_over
+    countdown_turtle.color("dark blue")
+    countdown_turtle.penup()
+    countdown_turtle.hideturtle()
+    top_height = screen.window_height() / 2
+    y = top_height * 0.7
+    countdown_turtle.setpos(0, y)
+    countdown_turtle.clear()
 
-turtle.tracer(0)
-setup_score_turtle()
-random_turtles()
-hide_turtles()
-show_turtles_rondomly()
-turtle.tracer(1)
+    if time>0:
+        countdown_turtle.clear()
+        countdown_turtle.write(arg="Time: {}".format(time), move=False, align="center", font=FONT)
+        screen.ontimer(lambda:countdown(time-1),1000)
+    else:
+        game_over=True
+        countdown_turtle.clear()
+        hide_turtles()
+        countdown_turtle.write(arg="Game Over", move=False, align="center", font=FONT)
+
+
+def start_game_up():
+    turtle.tracer(0)
+    setup_score_turtle()
+    countdown(30)
+    random_turtles()
+    hide_turtles()
+    show_turtles_rondomly()
+    turtle.tracer(1)
+
+start_game_up()
 turtle.mainloop()
